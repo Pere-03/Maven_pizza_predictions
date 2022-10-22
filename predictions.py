@@ -86,8 +86,6 @@ def load(df: pd.DataFrame, nombre_csv: str):
 
                 print(f'Estimated {colum}: {df[colum][0]}')
 
-        print(f'Para más informacion, vaya al nuevo csv creado: {nombre_csv}')
-
         return df
 
     else:
