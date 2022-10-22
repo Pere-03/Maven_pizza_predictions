@@ -9,5 +9,7 @@ Para ello, asumimos la cantidad de ingredientes que se emplea por cada tamaño d
 
 Todo esto se realiza ejecutando el archivo python predictions.py
 
-En esta versión, podemos seguir el proceso gracias a dagster. 
-Para ello, tenemos que ejecutar el archivo con el comando: dagit -f predictions.py
+En esta versión, podemos seguir el proceso gracias a dagster.
+
+Para ello, tenemos que ejecutar el archivo con el comando: "dagit -f predictions.py", ir a la dirección que nos devuelve. 
+Una vez alli, vamos a la pestaña de launchpads, y pulsamos el boton de Launch run (abajo a la derecha).
