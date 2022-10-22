@@ -5,4 +5,9 @@ Esta semana se pedirá mediante un input.
 Primero de todo analizaremos los tipos de datos (calidad_datos.py).
 
 Luego uniremos todos los csv filtrados por semana.
-Para ello, asumimos la cantidad de ingredientes que se emplea por cada tamaño de pizza
+Para ello, asumimos la cantidad de ingredientes que se emplea por cada tamaño de pizza.
+
+Todo esto se realiza ejecutando el archivo python predictions.py
+
+En esta versión, podemos seguir el proceso gracias a dagster. 
+Para ello, tenemos que ejecutar el archivo con el comando: dagit -f predictions.py
