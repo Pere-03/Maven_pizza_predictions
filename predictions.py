@@ -1,10 +1,15 @@
+from ast import Global
 import pandas as pd
+from dagster import job, op
 
+from random import randint
 from calidad_datos import main as analisis
 from transformacion_datos import etl as tranformar
 
 
 ERROR = 4
+
+SEMANA = randint(0,52)
 
 
 def aproximar_numero(numero: float):
@@ -17,13 +22,18 @@ def aproximar_numero(numero: float):
     return int(round(numero) + ERROR)
 
 
-def extract(semana: int):
+@op
+def extract():
     '''
     Recoge los datos del csv correspondiente a esa semana.
     sino, llamará a la anterior ETL
     '''
 
-    nombre_csv = 'csv_procesado_semana' + str(semana) + '.csv'
+    global SEMANA
+
+    analisis()
+
+    nombre_csv = 'csv_procesado_semana' + str(SEMANA) + '.csv'
 
     # Lo primero será ver si existe el archivo
     try:
@@ -35,7 +45,7 @@ def extract(semana: int):
 
         try:
 
-            dataframe = tranformar(semana)
+            dataframe = tranformar(SEMANA)
 
             return dataframe
 
@@ -45,7 +55,7 @@ def extract(semana: int):
 
             return False
 
-
+@op
 def transform(dataframe: pd.DataFrame):
     '''
     Dividimos el dataframe por semanas
@@ -69,26 +79,37 @@ def transform(dataframe: pd.DataFrame):
 
         return False
 
-
-def load(df: pd.DataFrame, nombre_csv: str):
+@op
+def load(df: pd.DataFrame):
     '''
     Guardaremos los ingredientes a comprar en un csv
     De igual manera, los imprimiremos por pantalla
     '''
+
+    global SEMANA
     if isinstance(df, pd.DataFrame):
+
+        nombre_csv = 'csv_procesado_semana' + str(SEMANA) + '.csv'
+
+        print(f'Estimando consumo para la semana {SEMANA}')
 
         df.to_csv(nombre_csv)
 
-        print(df)
-        print(f'Para más informacion, vaya al nuevo csv creado: {nombre_csv}')
+        df = df.transpose()
+
+        for colum in df.columns:
+
+            if colum != 'Unnamed: 0':
+
+                print(f'Estimated {colum}: {df[colum][0]}')
 
         return df
 
     else:
         return False
 
-
-def main(semana=-1):
+@job
+def main():
     '''
     Ejecuta todo el programa en el siguiente orden:
     1) Hace un análisis de los datos > analisis_datos.txt
@@ -96,18 +117,20 @@ def main(semana=-1):
         indicados, guardando los pedidos (pizzas e ingredientes) en ese periodo
     3) Realiza un prediccion para ese mismo mes, semana por semana
     '''
-    analisis()
+    # analisis()
 
-    while 52 <= semana or semana < 0:
+    '''while 52 <= semana or semana < 0:
         try:
             semana = int(input('Inserte numero de semana del año: '))
 
         except ValueError:
             semana = -1
-
+    semana = randint(1, 52)
     nombre_csv = 'ingredientes_semana' + str(semana) + '.csv'
+    '''
 
-    return load(transform(extract(semana)), nombre_csv)
+    load(transform(extract()))
+    return 
 
 
 if __name__ == '__main__':
