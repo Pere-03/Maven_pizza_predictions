@@ -61,6 +61,22 @@ def analisis_datos(ficheros: List[str], salida='analisis_datos.txt'):
     return
 
 
+def main(ficheros=None):
+    '''
+    Ejecuta todo el programa.
+    Ideal para importarlo desde otros archivos
+    '''
+    global FICHEROS_CSV
+
+    if not ficheros:
+
+        ficheros = FICHEROS_CSV
+
+    analisis_datos(ficheros)
+
+    return
+
+
 if __name__ == '__main__':
 
-    analisis_datos(FICHEROS_CSV)
+    main()
