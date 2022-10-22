@@ -88,7 +88,7 @@ def load(df: pd.DataFrame, nombre_csv: str):
         return False
 
 
-def main():
+def main(semana=-1):
     '''
     Ejecuta todo el programa en el siguiente orden:
     1) Hace un análisis de los datos > analisis_datos.txt
@@ -97,8 +97,6 @@ def main():
     3) Realiza un prediccion para ese mismo mes, semana por semana
     '''
     analisis()
-
-    semana = -1
 
     while 52 <= semana or semana < 0:
         try:

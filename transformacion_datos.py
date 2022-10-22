@@ -1,3 +1,4 @@
+from ctypes.wintypes import SIZE
 from logging import exception
 import pandas as pd
 import re
@@ -8,8 +9,17 @@ FICHEROS_CSV = [
             'orders.csv', 'pizza_types.csv', 'pizzas.csv']
 
 
-ini = pd.Timestamp('1 Jan 2015')
-fin = pd.Timestamp('1 Dec 2015')
+# Establecemos una proporcion de ingredientes para cada tamaño
+SIZES = {'S': 1, 'M': 1.25, 'L': 1.5, 'XL': 2, 'XXL': 2.5}
+
+# Creamos todas las semanas del año
+
+# Empezaremos en el año anterior, que como mucho tomará 6 días
+ini = pd.Timestamp('26 Dec 2014')
+
+# Finalizaremos el primer dia del año siguiente
+fin = pd.Timestamp('1 Jan 2016')
+
 SEMANAS = pd.date_range(start=ini, end=fin, freq='W')
 
 FECHAS = []
@@ -141,9 +151,6 @@ def transform(
                 dicc[df_final['ingredients'][i][j]] = []
                 total[df_final['ingredients'][i][j]] = 0
 
-    # Establecemos una proporcion de ingredientes para cada tamaño
-    sizes = {'S': 1, 'M': 1.25, 'L': 1.5, 'XL': 2, 'XXL': 2.5}
-
     # Vamos a recorrer el dataframe para ir agregando los ingredientes
     # por separado a cada pizza, y lo añadiremos a dicc
 
@@ -165,8 +172,8 @@ def transform(
             # segun el tamaño
             if ingrediente in df_final['ingredients'][i]:
 
-                dicc[ingrediente] += [sizes[size]]
-                total[ingrediente] += cantidad * sizes[size]
+                dicc[ingrediente] += [SIZES[size]]
+                total[ingrediente] += cantidad * SIZES[size]
 
             # Y si no está, fijaremos su valor a 0
             elif ingrediente not in df_final['ingredients'][i]:
