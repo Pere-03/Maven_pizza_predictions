@@ -8,3 +8,9 @@ Luego uniremos todos los csv filtrados por semana.
 Para ello, asumimos la cantidad de ingredientes que se emplea por cada tamaño de pizza
 
 Todo esto se realiza ejecutando el archivo python predictions.py
+
+De forma adicional se han creado dos ramas on distintos modos de ejecución.
+
+En rama_docker se incluye un Dockerfile para crear una imagen y un contenedor que aloje todo el proceso
+
+En rama_dagster se da soporte a este orquestador para seguir todo el proceso
