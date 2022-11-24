@@ -1,4 +1,3 @@
-from ast import Global
 import pandas as pd
 from dagster import job, op
 

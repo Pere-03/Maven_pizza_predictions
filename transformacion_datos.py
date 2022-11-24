@@ -1,5 +1,3 @@
-from ctypes.wintypes import SIZE
-from logging import exception
 import pandas as pd
 import re
 
